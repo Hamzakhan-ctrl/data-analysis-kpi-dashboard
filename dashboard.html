@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Maincrafts Task 2 Dashboard</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#1f2937}
+.header{background:#17365D;color:white;padding:24px 36px}
+.header h1{margin:0;font-size:28px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:24px}
+.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card .label{font-size:13px;color:#64748b;font-weight:bold}
+.card .value{font-size:28px;font-weight:bold;margin-top:8px}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:0 24px 24px}
+.panel{background:white;border-radius:10px;padding:10px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+@media(max-width:900px){.grid,.charts{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="header"><h1>MAINCRAFTS | Sales & Business KPI Dashboard</h1><div>Task 2 — Advanced Data Analysis, SQL Joins & Business KPIs</div></div>
+<div class="grid">
+<div class="card"><div class="label">TOTAL SALES</div><div class="value">$1,030,154</div></div>
+<div class="card"><div class="label">TOTAL PROFIT</div><div class="value">$137,981</div></div>
+<div class="card"><div class="label">PROFIT MARGIN</div><div class="value">13.4%</div></div>
+<div class="card"><div class="label">TOTAL CUSTOMERS</div><div class="value">120</div></div>
+</div>
+<div class="charts">
+<div class="panel"><div id="region"></div></div>
+<div class="panel"><div id="category"></div></div>
+<div class="panel"><div id="monthly"></div></div>
+<div class="panel"><div id="segment"></div></div>
+<div class="panel"><div id="topcustomers"></div></div>
+</div>
+<script>
+const region = [{"Region": "North", "Total_Sales": 317453.01, "Total_Profit": 42181.18, "Orders": 278, "Profit_Margin": 0.1328737755550026}, {"Region": "West", "Total_Sales": 270428.76, "Total_Profit": 36592.02, "Orders": 229, "Profit_Margin": 0.13531112593201994}, {"Region": "South", "Total_Sales": 259269.71, "Total_Profit": 34571.26, "Orders": 230, "Profit_Margin": 0.1333409135992014}, {"Region": "East", "Total_Sales": 183003.01, "Total_Profit": 24636.72, "Orders": 163, "Profit_Margin": 0.13462467092754377}];
+const category = [{"Product_Category": "Office Supplies", "Total_Sales": 144457.17, "Total_Profit": 27733.48, "Orders": 300, "Profit_Margin": 0.19198410158526572}, {"Product_Category": "Technology", "Total_Sales": 506848.52, "Total_Profit": 78283.49, "Orders": 240, "Profit_Margin": 0.1544514522800619}, {"Product_Category": "Accessories", "Total_Sales": 88814.82, "Total_Profit": 12337.89, "Orders": 133, "Profit_Margin": 0.1389170185786561}, {"Product_Category": "Furniture", "Total_Sales": 290033.98, "Total_Profit": 19626.32, "Orders": 227, "Profit_Margin": 0.06766903657288709}];
+const monthly = [{"Month": "2024-01", "Monthly_Sales": 25239.43, "Monthly_Profit": 3062.08}, {"Month": "2024-02", "Monthly_Sales": 53966.340000000004, "Monthly_Profit": 7894.49}, {"Month": "2024-03", "Monthly_Sales": 51096.24, "Monthly_Profit": 6255.25}, {"Month": "2024-04", "Monthly_Sales": 67317.93, "Monthly_Profit": 9043.77}, {"Month": "2024-05", "Monthly_Sales": 41260.11, "Monthly_Profit": 5449.63}, {"Month": "2024-06", "Monthly_Sales": 38427.28, "Monthly_Profit": 4355.01}, {"Month": "2024-07", "Monthly_Sales": 40403.27, "Monthly_Profit": 6302.28}, {"Month": "2024-08", "Monthly_Sales": 46938.71, "Monthly_Profit": 6281.34}, {"Month": "2024-09", "Monthly_Sales": 36222.85, "Monthly_Profit": 5323.86}, {"Month": "2024-10", "Monthly_Sales": 27502.78, "Monthly_Profit": 3244.91}, {"Month": "2024-11", "Monthly_Sales": 39110.770000000004, "Monthly_Profit": 4366.46}, {"Month": "2024-12", "Monthly_Sales": 40844.07, "Monthly_Profit": 5555.98}, {"Month": "2025-01", "Monthly_Sales": 56750.049999999996, "Monthly_Profit": 7927.14}, {"Month": "2025-02", "Monthly_Sales": 30977.32, "Monthly_Profit": 4141.32}, {"Month": "2025-03", "Monthly_Sales": 49768.479999999996, "Monthly_Profit": 6969.25}, {"Month": "2025-04", "Monthly_Sales": 41892.7, "Monthly_Profit": 6081.96}, {"Month": "2025-05", "Monthly_Sales": 62030.82, "Monthly_Profit": 7724.49}, {"Month": "2025-06", "Monthly_Sales": 36989.38, "Monthly_Profit": 5421.71}, {"Month": "2025-07", "Monthly_Sales": 39069.04, "Monthly_Profit": 4818.4}, {"Month": "2025-08", "Monthly_Sales": 34235.03, "Monthly_Profit": 4145.9800000000005}, {"Month": "2025-09", "Monthly_Sales": 41487.09, "Monthly_Profit": 6177.49}, {"Month": "2025-10", "Monthly_Sales": 39926.06, "Monthly_Profit": 5170.52}, {"Month": "2025-11", "Monthly_Sales": 45442.77, "Monthly_Profit": 6192.85}, {"Month": "2025-12", "Monthly_Sales": 43255.97, "Monthly_Profit": 6075.01}];
+const segment = [{"Segment": "Consumer", "Total_Sales": 535978.35, "Total_Profit": 71583.85, "Customers": 61, "Profit_Margin": 0.13355735357594203}, {"Segment": "Corporate", "Total_Sales": 281696.42, "Total_Profit": 36538.84, "Customers": 35, "Profit_Margin": 0.12970999063459876}, {"Segment": "Home Office", "Total_Sales": 212479.72, "Total_Profit": 29858.489999999998, "Customers": 24, "Profit_Margin": 0.14052395212117183}];
+const topcustomers = [{"Customer_ID": "CUST0117", "Customer_Name": "Customer 117", "Total_Revenue": 21293.29, "Total_Profit": 2815.36, "Orders": 16}, {"Customer_ID": "CUST0006", "Customer_Name": "Customer 006", "Total_Revenue": 18315.29, "Total_Profit": 1859.57, "Orders": 12}, {"Customer_ID": "CUST0016", "Customer_Name": "Customer 016", "Total_Revenue": 17646.25, "Total_Profit": 3266.17, "Orders": 13}, {"Customer_ID": "CUST0109", "Customer_Name": "Customer 109", "Total_Revenue": 17424.33, "Total_Profit": 2600.12, "Orders": 10}, {"Customer_ID": "CUST0057", "Customer_Name": "Customer 057", "Total_Revenue": 15925.9, "Total_Profit": 1890.84, "Orders": 12}, {"Customer_ID": "CUST0114", "Customer_Name": "Customer 114", "Total_Revenue": 15496.2, "Total_Profit": 1388.59, "Orders": 8}, {"Customer_ID": "CUST0084", "Customer_Name": "Customer 084", "Total_Revenue": 14942.62, "Total_Profit": 1840.29, "Orders": 9}, {"Customer_ID": "CUST0015", "Customer_Name": "Customer 015", "Total_Revenue": 14706.58, "Total_Profit": 2420.11, "Orders": 11}, {"Customer_ID": "CUST0118", "Customer_Name": "Customer 118", "Total_Revenue": 14611.54, "Total_Profit": 1972.92, "Orders": 11}, {"Customer_ID": "CUST0072", "Customer_Name": "Customer 072", "Total_Revenue": 14411.91, "Total_Profit": 2272.9, "Orders": 10}];
+
+Plotly.newPlot("region",[{x:region.map(d=>d.Region),y:region.map(d=>d.Total_Sales),type:"bar"}],{title:"Sales by Region",margin:{t:45}});
+Plotly.newPlot("category",[{x:category.map(d=>d.Product_Category),y:category.map(d=>d.Total_Profit),type:"bar"}],{title:"Profit by Category",margin:{t:45}});
+Plotly.newPlot("monthly",[{x:monthly.map(d=>d.Month),y:monthly.map(d=>d.Monthly_Sales,type:"scatter",mode:"lines+markers"}],{title:"Monthly Sales Trend",margin:{t:45},xaxis:{tickangle:-45}});
+Plotly.newPlot("segment",[{labels:segment.map(d=>d.Segment),values:segment.map(d=>d.Total_Sales),type:"pie"}],{title:"Segment Distribution",margin:{t:45}});
+Plotly.newPlot("topcustomers",[{x:topcustomers.map(d=>d.Total_Revenue),y:topcustomers.map(d=>d.Customer_Name),type:"bar",orientation:"h"}],{title:"Top 10 Customers by Revenue",margin:{t:45,l:110}});
+</script>
+</body>
+</html>
